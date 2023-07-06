@@ -73,7 +73,7 @@ public class ImportExportJobLogik {
      *            eine aus .csv importierte Zeile
      * @param zeilenNr
      *            die Zeilennummer in der .csv
-     * @return die siebenstellige Positionsnummer oder 'empty String' falls Posnr formal schlecht ist
+     * @return die siebenstellige Positionsnummer oder 'empty String' falls Posnr non-valid
      */
     public String pruefePosnr(final String[] tempSplitZeile, final int zeilenNr) {
         String tempStr = "";
