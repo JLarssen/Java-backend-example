@@ -34,8 +34,8 @@ import constants.Constants_Protokoll;
  * @author larsju
  *
  */
-public class TarifkatalogExportJob {
-	private static Logger log = LoggerFactory.getLogger(TarifkatalogExportJob.class);
+public class TarifdatabaseExportJob {
+	private static Logger log = LoggerFactory.getLogger(TarifdatabaseExportJob.class);
 
 	private static String[] bezeichnungen = new String[] { "TarifkatalogExport()", "exportiereTarifKatalog()" };
 
@@ -63,19 +63,19 @@ public class TarifkatalogExportJob {
 	 *
 	 * @param persistenceService IPersistenceService
 	 */
-	public TarifkatalogExportJob(final IPersistenceService persistenceService) {
+	public TarifdatabaseExportJob(final IPersistenceService persistenceService) {
 		this.helper = new Helper();
 		this.persistenceService = persistenceService;
 		this.importExportJobLogik = new ImportExportJobLogik();
 	}
 
 	/**
-	 * Kommandozeilenparameter fuer ExportTarifkatalogJob
+	 * Kommandozeilenparameter fuer TarifdatabaseExportJob
 	 *
 	 * -ausgabeDatei -
 	 */
 	public static void main(final String[] args) {
-		log.info("START des Job - TarifkatalogExportJob");
+		log.info("START des Job - TarifdatabaseExportJob");
 		(zaehler[INDEX_MAIN])++;
 		final long jetzt = System.currentTimeMillis();
 		final Helper helper = new Helper();
@@ -88,7 +88,7 @@ public class TarifkatalogExportJob {
 			if (commandLine != null) {
 				final IPersistenceService persistenceService = Konfiguration.getPersistenceService();
 				new KonfigurationEinlesen().allesNeuEinlesenUndVerarbeiten(request);
-				final TarifkatalogExportJob tarifExportJob = new TarifkatalogExportJob(persistenceService);
+				final TarifdatabaseExportJob tarifExportJob = new TarifdatabaseExportJob(persistenceService);
 				final String ausgabeDatei = typConverter
 						.getNotNullString(commandLine.getOptionValue(Constants_Parameter.AUSGABE_DATEI));
 				final PruefeAusgabeDatei pruefeAusgabeDatei = new PruefeAusgabeDatei(ausgabeDatei);
@@ -104,7 +104,7 @@ public class TarifkatalogExportJob {
 					}
 				} else {
 					log.info(
-							"AusgabeDatei ist bereits vorhanden --> TarifkatalogExportJob wird abgebrochen. Bitte wenden Sie sich an Ihren Systemadministrator! ");
+							"AusgabeDatei ist bereits vorhanden --> TarifdatabaseExportJob wird abgebrochen. Bitte wenden Sie sich an Ihren Systemadministrator! ");
 				}
 			}
 		} catch (final Exception e) {
@@ -112,9 +112,9 @@ public class TarifkatalogExportJob {
 		}
 		final long dauer = System.currentTimeMillis() - jetzt;
 		(laufzeiten[INDEX_MAIN]) += dauer;
-		log.info("TarifkatalogExportJob wurde durchgefuehrt, Dauer: " + new TypConverter().getNotNullString(dauer, true)
+		log.info("TarifdatabaseExportJob wurde durchgefuehrt, Dauer: " + new TypConverter().getNotNullString(dauer, true)
 				+ " Millisekunde(n)");
-		log.info("ENDE des Job - TarifkatalogExportJob");
+		log.info("ENDE des Job - TarifdatabaseExportJob");
 		try {
 			JPAUtil.shutdown();
 		} catch (final Exception e) {
@@ -191,7 +191,7 @@ public class TarifkatalogExportJob {
 			dateiHandler.schliesseDatei(request);
 		} catch (final Exception e) {
 			log.error("Etwas ist schief gelaufen beim Tarif-Export...  "
-					+ TarifkatalogExportJob.exceptionHandler.getErrorMeldung(e, request));
+					+ TarifdatabaseExportJob.exceptionHandler.getErrorMeldung(e, request));
 		}
 		laufzeiten[INDEX_EXPORT_CSV] += (System.currentTimeMillis() - jetzt);
 		return (protokollDTO);
